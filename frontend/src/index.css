@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --forest-primary: #143d2b;
+    --forest-dark: #0b291d;
+    --forest-accent: #2d6a4f;
+    --forest-light: #eaf5ee;
+    --forest-border: #d1e7dd;
+    --bg-main: #f5f6f8;
+    --card-bg: #ffffff;
+    --card-border: #e9ecef;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    border: none;
+  }
+}
+
+/* Custom scrollbar for sleek dashboard feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth card transitions */
+.dashboard-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
