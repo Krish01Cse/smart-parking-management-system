@@ -12,10 +12,12 @@ import {
   AlertTriangle,
   Wrench,
   Clock,
-  ArrowRight
+  ArrowRight,
+  MapPin
 } from 'lucide-react';
 import { ParkingSlot } from '../types';
 import { SlotCard } from '../components/SlotCard';
+import { ParkingLocationMapView } from '../components/ParkingLocationMapView';
 
 interface SlotsPageProps {
   slots: ParkingSlot[];
@@ -34,7 +36,7 @@ export const SlotsPage: React.FC<SlotsPageProps> = ({
   onStatusChange,
   isAdmin = false
 }) => {
-  const [viewMode, setViewMode] = useState<'columns' | 'grid' | 'table'>('columns');
+  const [viewMode, setViewMode] = useState<'columns' | 'grid' | 'table' | 'map'>('columns');
   const [vehicleFilter, setVehicleFilter] = useState<'all' | 'Car' | 'Bike'>('all');
   const [zoneFilter, setZoneFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -148,6 +150,18 @@ export const SlotsPage: React.FC<SlotsPageProps> = ({
           >
             <TableIcon className="w-4 h-4" />
             <span className="hidden sm:inline">Table</span>
+          </button>
+          <button
+            onClick={() => setViewMode('map')}
+            title="OpenStreetMap Nearby Hotels & Cafes View"
+            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              viewMode === 'map'
+                ? 'bg-[#143d2b] text-white shadow-xs'
+                : 'text-slate-500 hover:text-slate-900'
+            }`}
+          >
+            <MapPin className="w-4 h-4" />
+            <span className="hidden sm:inline">🗺️ OSM Map & Venues</span>
           </button>
         </div>
       </div>
@@ -295,7 +309,7 @@ export const SlotsPage: React.FC<SlotsPageProps> = ({
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-slate-600">{slot.location_zone}</td>
-                    <td className="py-3.5 px-4 font-bold text-slate-900">${slot.hourly_rate.toFixed(2)}/hr</td>
+                    <td className="py-3.5 px-4 font-bold text-slate-900">₹{slot.hourly_rate.toFixed(2)}/hr</td>
                     <td className="py-3.5 px-4">
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
@@ -343,6 +357,15 @@ export const SlotsPage: React.FC<SlotsPageProps> = ({
             </table>
           </div>
         </div>
+      )}
+
+      {/* VIEW MODE 4: OpenStreetMap Location & Nearby Places View */}
+      {viewMode === 'map' && (
+        <ParkingLocationMapView
+          slots={slots}
+          onBookSlot={onBookSlot}
+          isAdmin={isAdmin}
+        />
       )}
     </div>
   );

@@ -83,7 +83,7 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
                     calcVehicle === 'Car' ? 'bg-[#143d2b] text-white border-[#143d2b]' : 'bg-slate-50 text-slate-700'
                   }`}
                 >
-                  Car ($5.00)
+                  Car (₹5.00)
                 </button>
                 <button
                   type="button"
@@ -92,7 +92,7 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
                     calcVehicle === 'Bike' ? 'bg-[#143d2b] text-white border-[#143d2b]' : 'bg-slate-50 text-slate-700'
                   }`}
                 >
-                  Bike ($2.50)
+                  Bike (₹2.50)
                 </button>
               </div>
             </div>
@@ -110,7 +110,7 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Custom Rate ($/hr)</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Custom Rate (₹/hr)</label>
               <input
                 type="number"
                 min="1"
@@ -125,11 +125,11 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
           {/* Breakdown pill */}
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-wrap items-center justify-between text-xs">
             <span className="text-slate-600">
-              <b>{calcHours} hrs</b> × <b>${calcRate.toFixed(2)}/hr</b> = ${subtotal.toFixed(2)} (+ ${serviceCharge.toFixed(2)} 5% tax)
+              <b>{calcHours} hrs</b> × <b>₹{calcRate.toFixed(2)}/hr</b> = ₹{subtotal.toFixed(2)} (+ ₹{serviceCharge.toFixed(2)} 5% tax)
             </span>
             <div className="flex items-center gap-2">
               <span className="font-bold text-slate-500">Calculated Total:</span>
-              <span className="text-base font-extrabold text-[#143d2b]">${totalCalculated.toFixed(2)}</span>
+              <span className="text-base font-extrabold text-[#143d2b]">₹{totalCalculated.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
           <div>
             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Settlement Summary</h4>
             <div className="mt-3">
-              <span className="text-3xl font-extrabold text-[#143d2b]">${totalCollected.toFixed(2)}</span>
+              <span className="text-3xl font-extrabold text-[#143d2b]">₹{totalCollected.toFixed(2)}</span>
               <span className="text-xs text-slate-400 block mt-0.5">Total collected across verified transactions</span>
             </div>
           </div>
@@ -228,10 +228,10 @@ export const PaymentsPage: React.FC<PaymentsPageProps> = ({
                       <span className="block text-[11px] text-slate-400">{p.notes || 'Razorpay Gateway Channel'}</span>
                     </td>
                     <td className="py-3.5 px-4 text-slate-600">
-                      {p.duration_hours} hrs @ ${p.hourly_rate.toFixed(2)}/hr
+                      {p.duration_hours} hrs @ ₹{p.hourly_rate.toFixed(2)}/hr
                     </td>
                     <td className="py-3.5 px-4 font-extrabold text-[#143d2b] text-sm">
-                      ${p.amount.toFixed(2)}
+                      ₹{p.amount.toFixed(2)}
                     </td>
                     <td className="py-3.5 px-4">
                       <span

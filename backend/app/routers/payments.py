@@ -16,7 +16,7 @@ RAZORPAY_CONFIG = {
     "key_id": os.getenv("RAZORPAY_KEY_ID", "rzp_test_1DP5mmOlF5G5ag"),
     "key_secret": os.getenv("RAZORPAY_KEY_SECRET", ""),
     "currency": "INR",
-    "exchange_rate": 83.0 # 1 USD = 83.0 INR
+    "exchange_rate": 1.0 # Native INR
 }
 
 def generate_txn_id():
@@ -37,7 +37,7 @@ def calculate_fee(
         "subtotal": subtotal,
         "service_charge": service_tax,
         "total_amount": total_amount,
-        "breakdown_text": f"{duration_hours} hrs @ ${hourly_rate:.2f}/hr = ${subtotal:.2f} (+ ${service_tax:.2f} tax/service)"
+        "breakdown_text": f"{duration_hours} hrs @ ₹{hourly_rate:.2f}/hr = ₹{subtotal:.2f} (+ ₹{service_tax:.2f} tax/service)"
     }
 
 @router.get("")
@@ -238,9 +238,7 @@ def create_razorpay_order(data: RazorpayOrderCreate):
         conn.close()
         raise HTTPException(status_code=400, detail=f"Reservation '{res['booking_id']}' is already paid.")
 
-    total_usd = float(res["total_amount"])
-    # Convert USD to INR (e.g. 1 USD = 83 INR), amount in paise (1 INR = 100 paise)
-    amount_inr = round(total_usd * RAZORPAY_CONFIG["exchange_rate"], 2)
+    amount_inr = round(float(res["total_amount"]), 2)
     amount_paise = int(amount_inr * 100)
     receipt_id = f"rcpt_{res['booking_id'].lower()}_{random.randint(100, 999)}"
 

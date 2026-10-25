@@ -107,14 +107,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
           <div className="mt-4 flex items-baseline justify-between">
             <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              ${metrics.total_revenue.toFixed(2)}
+              ₹{metrics.total_revenue.toFixed(2)}
             </span>
             <span className="text-xs font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
               Razorpay Verified
             </span>
           </div>
           <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Pending Fees: <b className="text-amber-600">${metrics.pending_payments.toFixed(2)}</b></span>
+            <span>Pending Fees: <b className="text-amber-600">₹{metrics.pending_payments.toFixed(2)}</b></span>
             <span>Ledger: <b className="text-emerald-700">Verified</b></span>
           </div>
         </div>
@@ -287,7 +287,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="font-bold text-slate-900 block">${res.total_amount.toFixed(2)}</span>
+                    <span className="font-bold text-slate-900 block">₹{res.total_amount.toFixed(2)}</span>
                     <span
                       className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         res.status === 'Confirmed'
@@ -342,7 +342,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="font-extrabold text-[#143d2b] block">${txn.amount.toFixed(2)}</span>
+                    <span className="font-extrabold text-[#143d2b] block">₹{txn.amount.toFixed(2)}</span>
                     <span
                       className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         txn.status === 'Paid'

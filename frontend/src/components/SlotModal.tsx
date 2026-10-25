@@ -164,10 +164,10 @@ export const SlotModal: React.FC<SlotModalProps> = ({
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Hourly Rate ($ USD) *
+              Hourly Rate (₹ INR) *
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-sm">$</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-sm">₹</span>
               <input
                 type="number"
                 step="0.5"

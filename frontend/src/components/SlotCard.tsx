@@ -89,7 +89,7 @@ export const SlotCard: React.FC<SlotCardProps> = ({
         <div>
           <span className="text-[11px] text-slate-400 font-medium block">Rate</span>
           <span className="font-semibold text-slate-800 block mt-0.5">
-            ${slot.hourly_rate.toFixed(2)}/hr
+            ₹{slot.hourly_rate.toFixed(2)}/hr
           </span>
         </div>
         <div>

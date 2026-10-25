@@ -125,7 +125,7 @@ def get_ml_analytics() -> Dict[str, Any]:
             optimal_price = price
 
         elasticity_curve.append({
-            "price": f"${price:.2f}",
+            "price": f"₹{price:.2f}",
             "numeric_price": price,
             "expected_occupancy": round(expected_occupancy, 1),
             "projected_revenue": projected_daily_rev
@@ -166,7 +166,7 @@ def get_ml_analytics() -> Dict[str, Any]:
         if risk_score > 70:
             classification = "High Bottleneck"
             color = "#ef4444"
-            recommendation = "Apply +$1.50 surge rate or reroute incoming traffic"
+            recommendation = "Apply +₹50.00 surge rate or reroute incoming traffic"
         elif risk_score >= 35:
             classification = "Moderate Load"
             color = "#f59e0b"
@@ -233,8 +233,8 @@ def get_ml_analytics() -> Dict[str, Any]:
             "current_occupancy_rate": round(base_occupancy_pct, 1),
             "predicted_peak_time": peak_record["time"],
             "predicted_peak_occupancy": f"{peak_record['predicted']}%",
-            "optimal_hourly_price": f"${optimal_price:.2f}",
-            "current_avg_price": f"${avg_rate:.2f}",
+            "optimal_hourly_price": f"₹{optimal_price:.2f}",
+            "current_avg_price": f"₹{avg_rate:.2f}",
             "projected_revenue_gain": f"+{round(((best_revenue - (avg_rate * base_occupancy_pct/100 * total_slots * 12)) / max(1, best_revenue)) * 100, 1)}%"
         },
         "time_series_forecast": time_series_data,

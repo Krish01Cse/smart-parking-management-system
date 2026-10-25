@@ -184,7 +184,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                   value={s.id}
                   disabled={s.status !== 'Available'}
                 >
-                  Slot #{s.slot_number} ({s.vehicle_type}) — {s.location_zone} [${s.hourly_rate.toFixed(2)}/hr] {s.status !== 'Available' ? `(${s.status})` : '✓ Available'}
+                  Slot #{s.slot_number} ({s.vehicle_type}) — {s.location_zone} [₹{s.hourly_rate.toFixed(2)}/hr] {s.status !== 'Available' ? `(${s.status})` : '✓ Available'}
                 </option>
               ))}
             </select>
@@ -292,13 +292,13 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
             <div className="flex items-center justify-between text-xs text-slate-600">
               <span>Hourly Rate ({currentSlot?.vehicle_type || 'Vehicle'}):</span>
               <span className="font-semibold text-slate-800">
-                ${currentSlot ? currentSlot.hourly_rate.toFixed(2) : '0.00'}/hr
+                ₹{currentSlot ? currentSlot.hourly_rate.toFixed(2) : '0.00'}/hr
               </span>
             </div>
             <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900">Estimated Total Fee:</span>
               <span className="text-base font-extrabold text-[#143d2b]">
-                ${estimatedTotal.toFixed(2)}
+                ₹{estimatedTotal.toFixed(2)}
               </span>
             </div>
           </div>

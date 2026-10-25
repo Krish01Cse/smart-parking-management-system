@@ -16,7 +16,7 @@ import {
 } from 'recharts';
 import {
   TrendingUp,
-  DollarSign,
+  IndianRupee,
   Cpu,
   RefreshCw,
   AlertTriangle,
@@ -198,7 +198,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
             </span>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <DollarSign className="w-6 h-6" />
+            <IndianRupee className="w-6 h-6" />
           </div>
         </div>
 
@@ -307,7 +307,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
                 Calculates the revenue-maximizing hourly rate against parking occupancy elasticity
               </p>
             </div>
-            <DollarSign className="w-5 h-5 text-emerald-600" />
+            <IndianRupee className="w-5 h-5 text-emerald-600" />
           </div>
 
           <div className="h-72">
@@ -315,7 +315,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
               <ComposedChart data={price_elasticity_curve} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <XAxis dataKey="price" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
                 <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} unit="%" domain={[0, 100]} />
-                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} unit="$" />
+                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} unit="₹" />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
@@ -324,7 +324,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
                         <div className="bg-slate-900 text-white p-3 rounded-2xl shadow-xl text-xs space-y-1">
                           <p className="font-bold text-emerald-400">Tariff: {label}/hr</p>
                           <p>Expected Occupancy: <span className="font-bold text-white">{d.expected_occupancy}%</span></p>
-                          <p>Projected Revenue: <span className="font-bold text-emerald-300">${d.projected_revenue} / day</span></p>
+                          <p>Projected Revenue: <span className="font-bold text-emerald-300">₹{d.projected_revenue} / day</span></p>
                         </div>
                       );
                     }
@@ -335,7 +335,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
                 {/* Expected Occupancy Line */}
                 <Line yAxisId="left" type="monotone" dataKey="expected_occupancy" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Expected Occupancy (%)" />
                 {/* Projected Revenue Area/Bar */}
-                <Bar yAxisId="right" dataKey="projected_revenue" fill="#143d2b" radius={[4, 4, 0, 0]} opacity={0.85} name="Projected Daily Revenue ($)" />
+                <Bar yAxisId="right" dataKey="projected_revenue" fill="#143d2b" radius={[4, 4, 0, 0]} opacity={0.85} name="Projected Daily Revenue (₹)" />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -343,7 +343,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({ metrics }) => {
           <div className="mt-3 flex items-center justify-center gap-6 text-[11px] text-slate-500 font-medium">
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-2 bg-[#143d2b] rounded-sm" />
-              <span>Projected Daily Revenue ($)</span>
+              <span>Projected Daily Revenue (₹)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-1 bg-blue-500 rounded-full" />

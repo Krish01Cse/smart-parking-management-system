@@ -61,8 +61,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   if (!isOpen || !reservation) return null;
 
-  const totalUsd = reservation.total_amount;
-  const totalInr = Math.round(totalUsd * 83.0); // Converted INR rate
+  const totalInr = reservation.total_amount;
 
   // Primary payment handler using Razorpay
   const handleRazorpayPayment = async () => {
@@ -179,8 +178,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <div className="flex justify-between pt-1.5 font-bold text-sm text-[#143d2b]">
                   <span>Total Amount Paid:</span>
                   <div className="text-right">
-                    <span className="text-base font-extrabold">₹{totalInr.toLocaleString('en-IN')}</span>
-                    <span className="text-[11px] text-slate-500 block font-normal">(${completedPayment.amount.toFixed(2)})</span>
+                    <span className="text-base font-extrabold">₹{completedPayment.amount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -219,16 +217,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <div className="flex justify-between">
                   <span className="text-slate-500">Duration:</span>
                   <span className="font-medium text-slate-700">
-                    {reservation.duration_hours} hrs @ ${reservation.slot_rate || 5.0}/hr
+                    {reservation.duration_hours} hrs @ ₹{reservation.slot_rate || 5.0}/hr
                   </span>
                 </div>
                 <div className="pt-2 border-t border-slate-200 flex justify-between items-center text-sm font-bold text-slate-900">
                   <span>Payable Amount:</span>
                   <div className="text-right">
-                    <span className="text-xl text-[#143d2b] font-extrabold">₹{totalInr.toLocaleString('en-IN')}</span>
-                    <span className="text-xs text-slate-500 block font-normal">
-                      (${totalUsd.toFixed(2)} USD)
-                    </span>
+                    <span className="text-xl text-[#143d2b] font-extrabold">₹{reservation.total_amount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -274,7 +269,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 ) : (
                   <>
                     <Lock className="w-4 h-4 text-emerald-300" />
-                    <span>Pay ₹{totalInr.toLocaleString('en-IN')} with Razorpay</span>
+                    <span>Pay ₹{reservation.total_amount.toFixed(2)} with Razorpay</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

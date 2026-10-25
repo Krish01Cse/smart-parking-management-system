@@ -12,12 +12,14 @@ import {
   BookOpen,
   Settings,
   Calendar,
-  Sun
+  Sun,
+  MapPin
 } from 'lucide-react';
 
 export type NavTab =
   | 'dashboard'
   | 'slots'
+  | 'map'
   | 'reservations'
   | 'users'
   | 'payments'
@@ -38,6 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onSelectTab, onOpen
   const allNavItems = [
     { id: 'dashboard' as NavTab, label: 'Dashboard', icon: LayoutGrid, adminOnly: true },
     { id: 'slots' as NavTab, label: 'Parking Slots', icon: Car, adminOnly: false },
+    { id: 'map' as NavTab, label: 'Nearby Map & Hotels', icon: MapPin, adminOnly: false },
     { id: 'reservations' as NavTab, label: userRole === 'Customer' ? 'My Reservations' : 'Reservations', icon: CalendarCheck, adminOnly: false },
     { id: 'users' as NavTab, label: 'User Accounts', icon: Users, adminOnly: true },
     { id: 'payments' as NavTab, label: userRole === 'Customer' ? 'My Payments' : 'Payments Ledger', icon: Wallet, adminOnly: false },

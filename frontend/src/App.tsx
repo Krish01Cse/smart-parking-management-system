@@ -9,9 +9,9 @@ import { UserModal } from './components/UserModal';
 import { TestCaseModal } from './components/TestCaseModal';
 import { DefectModal } from './components/DefectModal';
 
-// Pages
 import { DashboardPage } from './pages/DashboardPage';
 import { SlotsPage } from './pages/SlotsPage';
+import { ParkingLocationMapView } from './components/ParkingLocationMapView';
 import { ReservationsPage } from './pages/ReservationsPage';
 import { UsersPage } from './pages/UsersPage';
 import { PaymentsPage } from './pages/PaymentsPage';
@@ -507,6 +507,17 @@ export function App() {
             />
           )}
 
+          {activeTab === 'map' && (
+            <ParkingLocationMapView
+              slots={slots}
+              onBookSlot={(slot) => {
+                setPreSelectedSlot(slot);
+                setIsReservationModalOpen(true);
+              }}
+              isAdmin={currentUser.role === 'Administrator'}
+            />
+          )}
+
           {activeTab === 'reservations' && (
             <ReservationsPage
               isAdmin={currentUser.role === 'Administrator'}
@@ -565,7 +576,7 @@ export function App() {
                   setActiveReservationForPayment(res);
                   setIsPaymentModalOpen(true);
                 } else {
-                  showToast('info', `Transaction ${p.transaction_id}: $${p.amount.toFixed(2)} via ${p.payment_method}.`);
+                  showToast('info', `Transaction ${p.transaction_id}: ₹${p.amount.toFixed(2)} via ${p.payment_method}.`);
                 }
               }}
             />

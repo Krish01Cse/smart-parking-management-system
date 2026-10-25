@@ -135,7 +135,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
                       <div className="text-[11px] text-slate-400">until {r.end_time}</div>
                     </td>
                     <td className="py-3.5 px-4">
-                      <div className="font-extrabold text-[#143d2b]">${r.total_amount.toFixed(2)}</div>
+                      <div className="font-extrabold text-[#143d2b]">₹{r.total_amount.toFixed(2)}</div>
                       <div className="text-[11px] text-slate-400">{r.duration_hours} hrs</div>
                     </td>
                     <td className="py-3.5 px-4">
@@ -277,7 +277,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
               </div>
               <div className="flex justify-between pt-1 text-sm font-extrabold text-[#143d2b]">
                 <span>Total Fee Calculated:</span>
-                <span>${selectedBooking.total_amount.toFixed(2)}</span>
+                <span>₹{selectedBooking.total_amount.toFixed(2)}</span>
               </div>
             </div>
 

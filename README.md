@@ -57,10 +57,17 @@ Developed for the **Project-Based Learning (PBL) Individual Evaluation** under t
 - **Cryptographic Hashing**: Passwords stored using **PBKDF2-HMAC with salted SHA-256 (100,000 iterations)**.
 - **Supabase Cloud Sync**: Real-time account creation via Supabase Auth Admin API and PostgreSQL database tables.
 
-### 4. 💳 Module 4: Dynamic Tariff Engine & Razorpay Gateway
+### 4. 💳 Module 4: Dynamic Tariff Engine & Razorpay Gateway (INR ₹)
+- **Native Rupee Pricing (₹)**: Every interface, pricing model, billing breakdown, and receipt operates natively in **Indian Rupees (₹)**.
 - **Tariff Formula**: Real-time hourly rate calculation factoring vehicle type, peak surcharge, duration, and 5% facility maintenance tax.
 - **Razorpay Integration**: Native checkout modal supporting Credit/Debit Cards, UPI, NetBanking, and Digital Wallets with **HMAC-SHA256 signature verification**.
 - **Payment Lifecycle & Receipts**: Full transaction ledger preventing duplicate payments, generating digital receipts with transaction IDs.
+
+### 5. 🗺️ Module 5: OpenStreetMap (OSM) Location & Nearby Venue Navigator
+- **Interactive OpenStreetMap GIS**: Powered by Leaflet and OpenStreetMap tiles with custom animated markers for parking zones and nearby venues.
+- **Hotel & Café Proximity Matching**: Select any destination—including luxury hotels (*The Grand Regal*, *Hyatt Regency*, *JW Marriott*, *The Oberoi*) and artisan cafés (*Blue Tokai*, *Café Coffee Day*, *Starbucks Reserve*, *Urban Bistro*).
+- **Automated Zone Guidance & Distance**: Automatically calculates geodesic walking distance (e.g., 95m, 1 min walk) and links the venue to the closest parking zone via dynamic routing paths.
+- **Direct Available Slot Booking**: Filters and lists only active **Available** parking slots in the nearest zone with vehicle filters (Car/Bike) and 1-click **"Book Slot"** reservation trigger.
 
 ---
 
