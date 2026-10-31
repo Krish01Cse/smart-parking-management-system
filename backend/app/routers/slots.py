@@ -8,10 +8,10 @@ router = APIRouter(prefix="/api/slots", tags=["Parking Slots"])
 
 @router.get("")
 def get_slots(
-    status: Optional[str] = Query(None),
-    vehicle_type: Optional[str] = Query(None),
-    zone: Optional[str] = Query(None),
-    search: Optional[str] = Query(None)
+    status: Optional[str] = None,
+    vehicle_type: Optional[str] = None,
+    zone: Optional[str] = None,
+    search: Optional[str] = None
 ):
     conn = get_db_connection()
     cursor = conn.cursor()
