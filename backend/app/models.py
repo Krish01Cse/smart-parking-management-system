@@ -61,6 +61,8 @@ class RazorpayPaymentVerify(BaseModel):
     razorpay_order_id: str
     razorpay_payment_id: str
     razorpay_signature: str
+    payment_method: Optional[str] = "Razorpay Gateway"
+
 
 class RazorpayConfigUpdate(BaseModel):
     key_id: str

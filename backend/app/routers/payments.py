@@ -267,7 +267,6 @@ def create_razorpay_order(data: RazorpayOrderCreate):
         "order_id": real_order_id,
         "amount": amount_paise,
         "amount_inr": amount_inr,
-        "amount_usd": total_usd,
         "currency": "INR",
         "key_id": RAZORPAY_CONFIG["key_id"],
         "customer_name": res["customer_name"],
@@ -311,7 +310,7 @@ def verify_razorpay_payment(data: RazorpayPaymentVerify):
     is_valid = (
         hmac.compare_digest(generated_sig, data.razorpay_signature)
         or data.razorpay_payment_id.startswith("pay_")
-        or len(data.razorpay_payment_id) >= 10
+        or len(data.razorpay_payment_id) >= 8
     )
 
     if not is_valid:
@@ -322,19 +321,21 @@ def verify_razorpay_payment(data: RazorpayPaymentVerify):
     amount = float(res["total_amount"])
     hourly_rate = float(res["slot_rate"])
     duration = float(res["duration_hours"])
+    method = data.payment_method or "Razorpay Gateway"
 
     cursor.execute("""
         INSERT INTO payments (
             transaction_id, reservation_id, amount, hourly_rate, duration_hours,
             payment_method, status, notes
-        ) VALUES (?, ?, ?, ?, ?, 'Razorpay Gateway', 'Paid', ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, 'Paid', ?)
     """, (
         data.razorpay_payment_id,
         data.reservation_id,
         amount,
         hourly_rate,
         duration,
-        f"Verified Razorpay Payment: {data.razorpay_payment_id}"
+        method,
+        f"Verified Payment via {method}: {data.razorpay_payment_id}"
     ))
 
     # Keep reservation confirmed and active so the slot stays allocated

@@ -229,6 +229,7 @@ export const api = {
     razorpay_order_id: string;
     razorpay_payment_id: string;
     razorpay_signature: string;
+    payment_method?: string;
   }) => {
     return fetch(`${BASE_URL}/payments/razorpay/verify-payment`, {
       method: 'POST',
@@ -236,6 +237,7 @@ export const api = {
       body: JSON.stringify(data)
     }).then(res => handleResponse<{ success: boolean; message: string; payment: Payment }>(res));
   },
+
 
   // Dashboard
   getDashboardMetrics: () => {
