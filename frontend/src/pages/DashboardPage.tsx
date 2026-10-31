@@ -258,12 +258,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <h3 className="text-base font-bold text-slate-900">Recent Parking Reservations</h3>
               <p className="text-xs text-slate-500">Live booking activity from database</p>
             </div>
-            <button
-              onClick={() => onNavigate('reservations')}
-              className="text-xs font-semibold text-[#143d2b] hover:underline"
-            >
-              View All
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => onNavigate('map')}
+                className="px-3 py-1 rounded-full bg-[#143d2b] hover:bg-[#1b4332] text-white text-xs font-bold flex items-center gap-1 shadow-xs transition-colors cursor-pointer"
+              >
+                Book on Map
+              </button>
+              <button
+                onClick={() => onNavigate('reservations')}
+                className="text-xs font-semibold text-slate-600 hover:text-slate-900 hover:underline"
+              >
+                View All
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">

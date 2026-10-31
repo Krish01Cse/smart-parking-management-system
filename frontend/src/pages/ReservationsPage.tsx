@@ -12,7 +12,10 @@ import {
   AlertTriangle,
   ArrowRight,
   ShieldCheck,
-  Receipt
+  Receipt,
+  MapPin,
+  Ticket,
+  Plus
 } from 'lucide-react';
 import { Reservation } from '../types';
 
@@ -21,6 +24,7 @@ interface ReservationsPageProps {
   onNewReservation: () => void;
   onCancelReservation: (id: number) => Promise<void>;
   onPayReservation: (reservation: Reservation) => void;
+  onNavigateToMap?: () => void;
   isAdmin?: boolean;
 }
 
@@ -29,6 +33,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
   onNewReservation,
   onCancelReservation,
   onPayReservation,
+  onNavigateToMap,
   isAdmin = false
 }) => {
   const [statusFilter, setStatusFilter] = useState<'all' | 'Confirmed' | 'Completed' | 'Cancelled'>('all');
@@ -65,7 +70,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
             <button
               key={st}
               onClick={() => setStatusFilter(st as any)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold capitalize transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold capitalize transition-all cursor-pointer ${
                 statusFilter === st
                   ? 'bg-slate-900 text-white'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -76,15 +81,28 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
           ))}
         </div>
 
-        <div className="relative">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search booking ID, customer, plate..."
-            className="pl-8 pr-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#143d2b] w-48 sm:w-64"
-          />
+        <div className="flex items-center gap-2.5">
+          {onNavigateToMap && (
+            <button
+              onClick={onNavigateToMap}
+              className="px-3.5 py-1.5 rounded-full bg-[#143d2b] hover:bg-[#1b4332] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer"
+              title="View Zones, Places, and Book on Interactive Map"
+            >
+              <MapPin className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Explore Map & Book Slot</span>
+            </button>
+          )}
+
+          <div className="relative">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search booking, customer, plate..."
+              className="pl-8 pr-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#143d2b] w-44 sm:w-56"
+            />
+          </div>
         </div>
       </div>
 
@@ -108,7 +126,24 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
               {filteredReservations.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-12 text-center text-slate-400 text-xs">
-                    No reservations matching current filters.
+                    <div className="flex flex-col items-center justify-center p-4 text-center space-y-2">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#143d2b] flex items-center justify-center">
+                        <MapPin className="w-6 h-6 text-emerald-700" />
+                      </div>
+                      <h4 className="text-sm font-bold text-slate-800">No Reservations Matching Filters</h4>
+                      <p className="text-xs text-slate-500 max-w-sm">
+                        View real-time zone occupancy and book your parking slot directly on the interactive map.
+                      </p>
+                      {onNavigateToMap && (
+                        <button
+                          onClick={onNavigateToMap}
+                          className="mt-2 px-4 py-2 rounded-full bg-[#143d2b] hover:bg-[#1b4332] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                        >
+                          <MapPin className="w-3.5 h-3.5 text-emerald-300" />
+                          <span>Explore Map & Book Slot</span>
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -164,19 +199,21 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
                       {r.payment_status === 'Paid' ? (
                         <button
                           onClick={() => onPayReservation(r)}
-                          className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs hover:bg-emerald-100 transition-colors"
-                          title="View Verified Razorpay Receipt"
+                          className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs hover:bg-emerald-100 transition-colors inline-flex items-center gap-1 cursor-pointer"
+                          title="View Official Receipt & Digital Parking Pass with QR"
                         >
-                          ✓ Paid
+                          <Ticket className="w-3 h-3 text-emerald-700" />
+                          <span>Receipt & QR Pass</span>
                         </button>
                       ) : (
                         r.status === 'Confirmed' && (
                           <button
                             onClick={() => onPayReservation(r)}
-                            title="Make Payment via Razorpay"
-                            className="px-3 py-1 rounded-full bg-[#143d2b] hover:bg-[#1b4332] text-white font-bold text-xs shadow-xs transition-colors"
+                            title="Complete Payment via UPI, Card, or Cash"
+                            className="px-3 py-1 rounded-full bg-[#143d2b] hover:bg-[#1b4332] text-white font-bold text-xs shadow-xs transition-colors inline-flex items-center gap-1 cursor-pointer"
                           >
-                            Pay with Razorpay
+                            <CreditCard className="w-3 h-3 text-emerald-300" />
+                            <span>Pay ₹{r.total_amount.toFixed(2)}</span>
                           </button>
                         )
                       )}
@@ -184,7 +221,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
                         <button
                           onClick={() => setConfirmCancelId(r.id)}
                           title={isAdmin ? "Administrator Force-Cancel Booking" : "Cancel Your Booking"}
-                          className={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+                          className={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors cursor-pointer ${
                             isAdmin
                               ? 'bg-rose-50 border border-rose-300 text-rose-700 hover:bg-rose-100'
                               : 'border border-rose-200 text-rose-700 hover:bg-rose-50'
@@ -195,7 +232,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
                       )}
                       <button
                         onClick={() => setSelectedBooking(r)}
-                        className="px-2 py-1 rounded-full text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                        className="px-2 py-1 rounded-full text-slate-500 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
                         title="View Full Booking Voucher"
                       >
                         Details
@@ -208,6 +245,7 @@ export const ReservationsPage: React.FC<ReservationsPageProps> = ({
           </table>
         </div>
       </div>
+
 
       {/* Confirmation Modal for Reservation Cancellation */}
       {confirmCancelId !== null && (

@@ -174,7 +174,11 @@ export function App() {
     try {
       const created = await api.createReservation(reservationData);
       showToast('success', `Reservation confirmed! Booking ID: ${created.booking_id}`);
-      loadAllData();
+      await loadAllData();
+      setIsReservationModalOpen(false);
+      // Immediately open payment modal so user can pay and view receipt & QR pass
+      setActiveReservationForPayment(created);
+      setIsPaymentModalOpen(true);
     } catch (err: any) {
       showToast('error', err.message);
       throw err;
@@ -318,10 +322,9 @@ export function App() {
             { id: 'Cancelled', label: 'Cancelled', count: filteredReservations.filter(r => r.status === 'Cancelled').length }
           ],
           action: {
-            label: 'New Reservation',
+            label: 'Explore Map & Book Slot',
             onClick: () => {
-              setPreSelectedSlot(null);
-              setIsReservationModalOpen(true);
+              setActiveTab('map');
             }
           }
         };
@@ -334,10 +337,9 @@ export function App() {
             { id: 'active', label: 'Active Bookings', count: reservations.filter(r => r.status === 'Confirmed').length }
           ],
           action: {
-            label: 'Book Parking Space',
+            label: 'Explore Map & Book Slot',
             onClick: () => {
-              setPreSelectedSlot(null);
-              setIsReservationModalOpen(true);
+              setActiveTab('map');
             }
           }
         };
@@ -480,8 +482,7 @@ export function App() {
               metrics={dashboardMetrics}
               onNavigate={(tab) => setActiveTab(tab)}
               onBookSlot={() => {
-                setPreSelectedSlot(null);
-                setIsReservationModalOpen(true);
+                setActiveTab('map');
               }}
               onRunTests={handleRunTestSuite}
             />
@@ -530,8 +531,10 @@ export function App() {
                   : reservations
               }
               onNewReservation={() => {
-                setPreSelectedSlot(null);
-                setIsReservationModalOpen(true);
+                setActiveTab('map');
+              }}
+              onNavigateToMap={() => {
+                setActiveTab('map');
               }}
               onCancelReservation={handleCancelReservation}
               onPayReservation={(res) => {
