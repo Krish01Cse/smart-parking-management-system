@@ -217,6 +217,19 @@ def update_user_role(user_id: int, role_data: dict):
 @router.post("/supabase-sync-all")
 def trigger_supabase_sync_all():
     """Admin endpoint: synchronize all users, slots, reservations, and payments to Supabase."""
+    if not is_supabase_configured():
+        return {
+            "success": False,
+            "message": "Supabase API Key is missing in .env. Set SUPABASE_KEY in your .env file, then run supabase_schema.sql in Supabase SQL editor.",
+            "counts": {
+                "users": "0/0",
+                "slots": "0/0",
+                "reservations": "0/0",
+                "payments": "0/0"
+            },
+            "cloud_status": get_supabase_cloud_status()
+        }
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -257,6 +270,20 @@ def trigger_supabase_sync_all():
 
     status_cloud = get_supabase_cloud_status()
 
+    # If key is set but tables are missing in public schema
+    if slot_synced == 0 and res_synced == 0 and not any(t.get("exists") for t in status_cloud.get("tables", {}).values()):
+        return {
+            "success": False,
+            "message": "Connected to Supabase, but tables (users, parking_slots, reservations, payments) do not exist yet. Please execute supabase_schema.sql in the Supabase SQL editor.",
+            "counts": {
+                "users": f"{user_synced}/{len(users)}",
+                "slots": f"{slot_synced}/{len(slots)}",
+                "reservations": f"{res_synced}/{len(reservations)}",
+                "payments": f"{pay_synced}/{len(payments)}"
+            },
+            "cloud_status": status_cloud
+        }
+
     return {
         "success": True,
         "message": f"Cloud synchronization complete! Synced {user_synced} users, {slot_synced} slots, {res_synced} reservations, and {pay_synced} payments.",
@@ -268,3 +295,4 @@ def trigger_supabase_sync_all():
         },
         "cloud_status": status_cloud
     }
+

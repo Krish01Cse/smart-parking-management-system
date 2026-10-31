@@ -108,63 +108,135 @@ export const UsersPage: React.FC<UsersPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Supabase Cloud Sync Center Card */}
-      <div className="p-6 rounded-3xl bg-slate-900 text-white shadow-md border border-slate-800 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
-              <Cloud className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h4 className="text-base font-bold text-white">Supabase Cloud Database & Auth Integration</h4>
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
-                  {supabaseStatus?.auth_connected ? '● Cloud Connected' : 'Connecting...'}
-                </span>
+      <div className="p-6 rounded-3xl bg-slate-900 text-white shadow-md border border-slate-800 flex flex-col gap-5">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                <Cloud className="w-5 h-5" />
               </div>
-              <p className="text-xs text-slate-400 font-mono mt-0.5">
-                {supabaseStatus?.project_url || 'https://jsigdjyqhvgheefrddol.supabase.co'}
-              </p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-base font-bold text-white">Supabase Cloud Database & Auth Integration</h4>
+                  <span className={`px-2.5 py-0.5 rounded-full border text-[10px] font-bold ${
+                    !supabaseStatus?.configured
+                      ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                      : supabaseStatus?.tables?.users?.exists
+                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                      : 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300'
+                  }`}>
+                    {!supabaseStatus?.configured
+                      ? '● SUPABASE_KEY Missing in .env'
+                      : supabaseStatus?.tables?.users?.exists
+                      ? '● Cloud Connected & Tables Active'
+                      : '● Schema Migration Pending in SQL Editor'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 font-mono mt-0.5">
+                  {supabaseStatus?.project_url || 'https://jsigdjyqhvgheefrddol.supabase.co'}
+                </p>
+              </div>
             </div>
+            <p className="text-xs text-slate-300 max-w-2xl">
+              User credentials, admin accounts, slot telemetry, bookings, and payments can be viewed in your Supabase Table Editor and Authentication tab.
+            </p>
+            {syncResult && (
+              <div className="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-xs font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{syncResult}</span>
+              </div>
+            )}
           </div>
-          <p className="text-xs text-slate-300 max-w-2xl">
-            User credentials, profiles, parking slots, and Razorpay receipts are replicated with encrypted salted hashes. View all registered accounts in your Supabase Auth dashboard.
-          </p>
-          {syncResult && (
-            <div className="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>{syncResult}</span>
+
+          <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+            <div className="bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-700 text-xs space-y-1">
+              <span className="text-[10px] text-slate-400 uppercase font-bold block">Cloud User Accounts</span>
+              <span className="text-sm font-extrabold text-emerald-400">
+                {supabaseStatus?.auth_user_count ?? 8} Synced
+              </span>
             </div>
-          )}
+
+            <button
+              onClick={handleSyncToSupabase}
+              disabled={isSyncing}
+              className="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-all disabled:opacity-50 cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span>{isSyncing ? 'Syncing to Supabase...' : 'Sync All Data to Supabase'}</span>
+            </button>
+
+            <a
+              href="https://supabase.com/dashboard/project/jsigdjyqhvgheefrddol/sql/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors cursor-pointer"
+            >
+              <span>Supabase SQL Editor</span>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+            </a>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          <div className="bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-700 text-xs space-y-1">
-            <span className="text-[10px] text-slate-400 uppercase font-bold block">Cloud User Accounts</span>
-            <span className="text-sm font-extrabold text-emerald-400">
-              {supabaseStatus?.auth_user_count ?? 8} Synced
+        {/* Supabase Table Status Checklist */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-800">
+          <div className="bg-slate-800/50 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-semibold text-slate-300">Users & Admin Logins</div>
+              <div className="text-[10px] font-mono text-slate-400">users / user_credentials</div>
+            </div>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+              supabaseStatus?.tables?.users?.exists
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+            }`}>
+              {supabaseStatus?.tables?.users?.exists ? `✓ ${supabaseStatus.tables.users.count} rows` : 'Needs SQL Run'}
             </span>
           </div>
 
-          <button
-            onClick={handleSyncToSupabase}
-            disabled={isSyncing}
-            className="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-all disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Syncing to Supabase...' : 'Sync All Data to Supabase'}</span>
-          </button>
+          <div className="bg-slate-800/50 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-semibold text-slate-300">Bookings Table</div>
+              <div className="text-[10px] font-mono text-slate-400">reservations / bookings</div>
+            </div>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+              supabaseStatus?.tables?.reservations?.exists
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+            }`}>
+              {supabaseStatus?.tables?.reservations?.exists ? `✓ ${supabaseStatus.tables.reservations.count} rows` : 'Needs SQL Run'}
+            </span>
+          </div>
 
-          <a
-            href="https://supabase.com/dashboard/project/jsigdjyqhvgheefrddol/sql/new"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3.5 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors"
-          >
-            <span>Supabase Dashboard</span>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-          </a>
+          <div className="bg-slate-800/50 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-semibold text-slate-300">Parking Slots Table</div>
+              <div className="text-[10px] font-mono text-slate-400">parking_slots</div>
+            </div>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+              supabaseStatus?.tables?.parking_slots?.exists
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+            }`}>
+              {supabaseStatus?.tables?.parking_slots?.exists ? `✓ ${supabaseStatus.tables.parking_slots.count} rows` : 'Needs SQL Run'}
+            </span>
+          </div>
+
+          <div className="bg-slate-800/50 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-semibold text-slate-300">Payment Receipts</div>
+              <div className="text-[10px] font-mono text-slate-400">payments</div>
+            </div>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+              supabaseStatus?.tables?.payments?.exists
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+            }`}>
+              {supabaseStatus?.tables?.payments?.exists ? `✓ ${supabaseStatus.tables.payments.count} rows` : 'Needs SQL Run'}
+            </span>
+          </div>
         </div>
       </div>
+
 
       {/* Security Info Card */}
       <div className="p-4 rounded-3xl bg-emerald-50 border border-emerald-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
